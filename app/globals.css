@@ -1,0 +1,235 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --background: oklch(0.99 0.005 90);
+  --foreground: oklch(0.18 0.02 250);
+
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.18 0.02 250);
+
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.18 0.02 250);
+
+  --primary: oklch(0.32 0.08 250);
+  --primary-foreground: oklch(0.99 0.005 90);
+
+  --secondary: oklch(0.96 0.01 90);
+  --secondary-foreground: oklch(0.18 0.02 250);
+
+  --muted: oklch(0.96 0.01 90);
+  --muted-foreground: oklch(0.45 0.02 250);
+
+  --accent: oklch(0.72 0.15 65);
+  --accent-foreground: oklch(0.18 0.02 250);
+
+  --destructive: oklch(0.55 0.20 25);
+  --destructive-foreground: oklch(0.99 0.005 90);
+
+  --border: oklch(0.90 0.01 90);
+  --input: oklch(0.90 0.01 90);
+  --ring: oklch(0.72 0.15 65);
+
+  --radius: 1rem;
+}
+
+.dark {
+  --background: oklch(0.16 0.02 250);
+  --foreground: oklch(0.96 0.005 90);
+
+  --card: oklch(0.21 0.02 250);
+  --card-foreground: oklch(0.96 0.005 90);
+
+  --popover: oklch(0.21 0.02 250);
+  --popover-foreground: oklch(0.96 0.005 90);
+
+  --primary: oklch(0.92 0.02 90);
+  --primary-foreground: oklch(0.18 0.02 250);
+
+  --secondary: oklch(0.26 0.02 250);
+  --secondary-foreground: oklch(0.96 0.005 90);
+
+  --muted: oklch(0.24 0.02 250);
+  --muted-foreground: oklch(0.70 0.02 90);
+
+  --accent: oklch(0.78 0.15 65);
+  --accent-foreground: oklch(0.18 0.02 250);
+
+  --destructive: oklch(0.60 0.22 25);
+  --destructive-foreground: oklch(0.96 0.005 90);
+
+  --border: oklch(0.32 0.02 250);
+  --input: oklch(0.32 0.02 250);
+  --ring: oklch(0.78 0.15 65);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-fraunces), ui-serif, Georgia, serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, SFMono-Regular, monospace;
+
+  --radius-sm: calc(var(--radius) - 0.5rem);
+  --radius-md: calc(var(--radius) - 0.25rem);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 0.25rem);
+  --radius-2xl: calc(var(--radius) + 0.5rem);
+
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+
+  @keyframes accordion-down {
+    from { height: 0; }
+    to { height: var(--radix-accordion-content-height); }
+  }
+  @keyframes accordion-up {
+    from { height: var(--radix-accordion-content-height); }
+    to { height: 0; }
+  }
+}
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    border-color: var(--border);
+  }
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  body {
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: var(--font-sans);
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-serif);
+    letter-spacing: -0.02em;
+  }
+  ::selection {
+    background: var(--accent);
+    color: var(--accent-foreground);
+  }
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+}
+
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 1rem;
+  background: var(--primary);
+  color: var(--primary-foreground);
+  padding: 0.75rem 1.25rem;
+  border-radius: 9999px;
+  font-weight: 500;
+  z-index: 100;
+  transition: top 200ms ease-out;
+}
+.skip-link:focus {
+  top: 1rem;
+}
+
+.link-underline {
+  position: relative;
+  display: inline-block;
+}
+.link-underline::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform-origin: right center;
+  transform: scaleX(0);
+  transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.link-underline:hover::after,
+.link-underline:focus-visible::after {
+  transform-origin: left center;
+  transform: scaleX(1);
+}
+
+/* Sheet (Radix Dialog) — slide + fade */
+.sheet-overlay {
+  animation: fade-in 200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.sheet-overlay[data-state="closed"] {
+  animation: fade-out 180ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.sheet-panel {
+  animation: slide-in-right 320ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.sheet-panel[data-side="left"] { animation-name: slide-in-left; }
+.sheet-panel[data-side="top"] { animation-name: slide-in-top; }
+.sheet-panel[data-side="bottom"] { animation-name: slide-in-bottom; }
+.sheet-panel[data-state="closed"][data-side="right"] { animation: slide-out-right 220ms cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+.sheet-panel[data-state="closed"][data-side="left"] { animation: slide-out-left 220ms cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+.sheet-panel[data-state="closed"][data-side="top"] { animation: slide-out-top 220ms cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+.sheet-panel[data-state="closed"][data-side="bottom"] { animation: slide-out-bottom 220ms cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+
+@keyframes fade-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fade-out { from { opacity: 1; } to { opacity: 0; } }
+@keyframes slide-in-right { from { transform: translateX(100%); } to { transform: translateX(0); } }
+@keyframes slide-out-right { from { transform: translateX(0); } to { transform: translateX(100%); } }
+@keyframes slide-in-left { from { transform: translateX(-100%); } to { transform: translateX(0); } }
+@keyframes slide-out-left { from { transform: translateX(0); } to { transform: translateX(-100%); } }
+@keyframes slide-in-top { from { transform: translateY(-100%); } to { transform: translateY(0); } }
+@keyframes slide-out-top { from { transform: translateY(0); } to { transform: translateY(-100%); } }
+@keyframes slide-in-bottom { from { transform: translateY(100%); } to { transform: translateY(0); } }
+@keyframes slide-out-bottom { from { transform: translateY(0); } to { transform: translateY(100%); } }
+
+.accordion-content[data-state="open"] {
+  animation: accordion-down 240ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+.accordion-content[data-state="closed"] {
+  animation: accordion-up 200ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes accordion-down {
+  from { height: 0; opacity: 0; }
+  to { height: var(--radix-accordion-content-height); opacity: 1; }
+}
+@keyframes accordion-up {
+  from { height: var(--radix-accordion-content-height); opacity: 1; }
+  to { height: 0; opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

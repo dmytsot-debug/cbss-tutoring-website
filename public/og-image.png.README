@@ -1,0 +1,11 @@
+PLACEHOLDER — replace this directory entry with a real og-image.png.
+
+Recommended specs:
+  • 1200 x 630 px
+  • PNG or JPG (PNG preferred for type/logo work)
+  • Under 300 KB
+  • Branded: serif headline "CBSS Tutoring Services" over the navy/cream palette,
+    accent amber rule. Match the site's editorial tone — no clipart.
+
+Once you drop og-image.png into /public, social previews on Twitter, Facebook,
+LinkedIn, iMessage, and Slack will render the new image automatically.
