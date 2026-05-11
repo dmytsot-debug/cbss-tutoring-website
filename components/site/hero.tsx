@@ -1,7 +1,13 @@
 "use client";
 
+import { useRef } from "react";
 import Link from "next/link";
-import { motion, useReducedMotion } from "framer-motion";
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+} from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { site, stats } from "@/lib/content";
 
@@ -9,6 +15,52 @@ const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 export function Hero() {
   const reduce = useReducedMotion();
+  const heroRef = useRef<HTMLElement>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"],
+  });
+
+  const rotateX = useTransform(
+    scrollYProgress,
+    [0, 1],
+    reduce ? [0, 0] : [0, -8],
+  );
+  const scale = useTransform(
+    scrollYProgress,
+    [0, 1],
+    reduce ? [1, 1] : [1, 0.94],
+  );
+  const stageY = useTransform(
+    scrollYProgress,
+    [0, 1],
+    reduce ? [0, 0] : [0, -40],
+  );
+  const stageOpacity = useTransform(scrollYProgress, [0, 0.65, 1], [1, 1, 0]);
+
+  const bgY = useTransform(
+    scrollYProgress,
+    [0, 1],
+    reduce ? ["0%", "0%"] : ["0%", "32%"],
+  );
+  const bgScale = useTransform(
+    scrollYProgress,
+    [0, 1],
+    reduce ? [1, 1] : [1, 1.08],
+  );
+
+  const asideY = useTransform(
+    scrollYProgress,
+    [0, 1],
+    reduce ? [0, 0] : [0, -90],
+  );
+  const headlineZ = useTransform(
+    scrollYProgress,
+    [0, 1],
+    reduce ? [0, 0] : [0, 40],
+  );
+
   const fadeUp = (delay = 0) => ({
     initial: { opacity: 0, y: reduce ? 0 : 24 },
     animate: { opacity: 1, y: 0 },
@@ -17,15 +69,32 @@ export function Hero() {
 
   return (
     <section
-      className="relative min-h-[85vh] overflow-hidden"
+      ref={heroRef}
+      className="relative min-h-[85vh] overflow-hidden [perspective:1200px]"
       aria-labelledby="hero-heading"
     >
-      <div className="pointer-events-none absolute inset-0 -z-10">
+      <motion.div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-10"
+        style={{ y: bgY, scale: bgScale }}
+      >
         <div className="absolute -top-32 left-1/2 h-[560px] w-[560px] -translate-x-1/2 rounded-full bg-accent/15 blur-3xl" />
         <div className="absolute right-[-200px] top-1/3 h-[420px] w-[420px] rounded-full bg-primary/10 blur-3xl" />
-      </div>
+      </motion.div>
 
-      <div className="mx-auto grid min-h-[85vh] max-w-6xl grid-cols-1 items-center gap-12 px-6 py-24 md:px-8 lg:grid-cols-12 lg:px-12 lg:py-32">
+      <motion.div
+        style={{
+          rotateX,
+          scale,
+          y: stageY,
+          opacity: stageOpacity,
+          transformOrigin: "center top",
+          transformPerspective: 1200,
+          transformStyle: "preserve-3d",
+          willChange: "transform, opacity",
+        }}
+        className="mx-auto grid min-h-[85vh] max-w-6xl grid-cols-1 items-center gap-12 px-6 py-24 md:px-8 lg:grid-cols-12 lg:px-12 lg:py-32"
+      >
         <div className="lg:col-span-9">
           <motion.span
             {...fadeUp(0)}
@@ -38,6 +107,7 @@ export function Hero() {
           <motion.h1
             id="hero-heading"
             {...fadeUp(0.08)}
+            style={{ z: headlineZ, transformStyle: "preserve-3d" }}
             className="mt-6 font-serif text-5xl leading-[1.05] tracking-tight text-foreground sm:text-6xl md:text-7xl"
           >
             Learn alongside students who&rsquo;ve{" "}
@@ -68,6 +138,7 @@ export function Hero() {
 
         <motion.aside
           {...fadeUp(0.32)}
+          style={{ y: asideY }}
           className="hidden border-l border-border pl-8 lg:col-span-3 lg:block"
           aria-label="Site facts"
         >
@@ -96,7 +167,7 @@ export function Hero() {
             </li>
           </ul>
         </motion.aside>
-      </div>
+      </motion.div>
     </section>
   );
 }
