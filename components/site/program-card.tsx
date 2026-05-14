@@ -40,6 +40,11 @@ export function ProgramCard({
   const rotateY = useSpring(useTransform(rawX, [-0.5, 0.5], [-7, 7]), springConfig);
   const glowX = useTransform(rawX, [-0.5, 0.5], ["0%", "100%"]);
   const glowY = useTransform(rawY, [-0.5, 0.5], ["0%", "100%"]);
+  const glowBg = useTransform(
+    [glowX, glowY],
+    ([x, y]: string[]) =>
+      `radial-gradient(300px circle at ${x} ${y}, rgba(194,130,50,0.09), transparent 70%)`,
+  );
 
   function onMouseMove(e: React.MouseEvent<HTMLDivElement>) {
     if (reduce) return;
@@ -76,13 +81,7 @@ export function ProgramCard({
         <motion.div
           aria-hidden
           className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-          style={{
-            background: useTransform(
-              [glowX, glowY],
-              ([x, y]) =>
-                `radial-gradient(300px circle at ${x} ${y}, var(--accent) / 0.07, transparent 70%)`,
-            ),
-          }}
+          style={{ background: glowBg }}
         />
       )}
 
