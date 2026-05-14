@@ -1,6 +1,15 @@
+"use client";
+
+import { useRef } from "react";
 import Link from "next/link";
+import {
+  motion,
+  useMotionValue,
+  useSpring,
+  useTransform,
+  useReducedMotion,
+} from "framer-motion";
 import { ArrowUpRight, type LucideIcon } from "lucide-react";
-import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
 type Props = {
@@ -20,14 +29,64 @@ export function ProgramCard({
   cta = "Learn more",
   className,
 }: Props) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const reduce = useReducedMotion();
+
+  const rawX = useMotionValue(0);
+  const rawY = useMotionValue(0);
+
+  const springConfig = { stiffness: 280, damping: 28 };
+  const rotateX = useSpring(useTransform(rawY, [-0.5, 0.5], [7, -7]), springConfig);
+  const rotateY = useSpring(useTransform(rawX, [-0.5, 0.5], [-7, 7]), springConfig);
+  const glowX = useTransform(rawX, [-0.5, 0.5], ["0%", "100%"]);
+  const glowY = useTransform(rawY, [-0.5, 0.5], ["0%", "100%"]);
+
+  function onMouseMove(e: React.MouseEvent<HTMLDivElement>) {
+    if (reduce) return;
+    const rect = cardRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    rawX.set((e.clientX - rect.left) / rect.width - 0.5);
+    rawY.set((e.clientY - rect.top) / rect.height - 0.5);
+  }
+
+  function onMouseLeave() {
+    rawX.set(0);
+    rawY.set(0);
+  }
+
   return (
-    <Card
+    <motion.div
+      ref={cardRef}
+      onMouseMove={onMouseMove}
+      onMouseLeave={onMouseLeave}
+      style={
+        reduce
+          ? {}
+          : { rotateX, rotateY, transformStyle: "preserve-3d", perspective: 900 }
+      }
+      whileHover={reduce ? {} : { scale: 1.02 }}
+      transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
       className={cn(
-        "group flex h-full flex-col p-8 hover:-translate-y-1 hover:shadow-xl hover:shadow-foreground/5",
+        "group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card p-8 text-card-foreground transition-shadow duration-300 hover:shadow-2xl hover:shadow-foreground/8",
         className,
       )}
     >
-      <div className="mb-6 inline-flex size-12 items-center justify-center rounded-xl bg-accent/10 text-accent">
+      {/* Spotlight glow that follows the mouse */}
+      {!reduce && (
+        <motion.div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+          style={{
+            background: useTransform(
+              [glowX, glowY],
+              ([x, y]) =>
+                `radial-gradient(300px circle at ${x} ${y}, var(--accent) / 0.07, transparent 70%)`,
+            ),
+          }}
+        />
+      )}
+
+      <div className="relative mb-6 inline-flex size-12 items-center justify-center rounded-xl bg-accent/10 text-accent transition-transform duration-300 group-hover:scale-110">
         <Icon className="size-5" />
       </div>
       <h3 className="font-serif text-2xl leading-[1.2] tracking-tight text-foreground">
@@ -43,6 +102,6 @@ export function ProgramCard({
         <span className="link-underline">{cta}</span>
         <ArrowUpRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
       </Link>
-    </Card>
+    </motion.div>
   );
 }

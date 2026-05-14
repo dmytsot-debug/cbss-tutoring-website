@@ -23,11 +23,16 @@ export function FadeIn({
   const prefersReducedMotion = useReducedMotion();
 
   const variants: Variants = {
-    hidden: { opacity: 0, y: prefersReducedMotion ? 0 : y },
+    hidden: {
+      opacity: 0,
+      y: prefersReducedMotion ? 0 : y,
+      filter: prefersReducedMotion ? "blur(0px)" : "blur(6px)",
+    },
     visible: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.6, ease: EASE, delay },
+      filter: "blur(0px)",
+      transition: { duration: 0.7, ease: EASE, delay },
     },
   };
 

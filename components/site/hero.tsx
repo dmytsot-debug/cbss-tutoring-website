@@ -113,34 +113,40 @@ export function Hero() {
         />
       </div>
 
-      {/* Floating symbol stream */}
+      {/* Floating symbol stream — each particle rendered twice, offset by half its period, for a seamless loop */}
       {!reduce && (
         <div
           aria-hidden
           className="absolute inset-0 overflow-hidden"
           style={{ perspective: "1000px" }}
         >
-          {PARTICLES.map((p) => (
-            <div
-              key={p.id}
-              className="symbol-flow absolute pointer-events-none select-none leading-none"
-              style={{
-                top: `${p.top}%`,
-                left: 0,
-                fontSize: `${p.sz}px`,
-                color: p.col,
-                opacity: p.op,
-                animationDuration: `${p.dur}s`,
-                animationDelay: `${p.del}s`,
-                "--sym-rx": `${p.rx}deg`,
-                "--sym-rz": `${p.rz}deg`,
-                textShadow: `0 0 ${Math.round(p.sz * 0.4)}px ${p.col}70, 0 0 ${Math.round(p.sz * 0.9)}px ${p.col}28`,
-                fontFamily: "ui-monospace, SFMono-Regular, monospace",
-              } as React.CSSProperties}
-            >
-              {p.sym}
-            </div>
-          ))}
+          {PARTICLES.flatMap((p) => [
+            { key: `${p.id}-a`, del: p.del },
+            { key: `${p.id}-b`, del: p.del - p.dur / 2 },
+          ]).map(({ key, del }) => {
+            const p = PARTICLES[parseInt(key.split("-")[0])];
+            return (
+              <div
+                key={key}
+                className="symbol-flow absolute pointer-events-none select-none leading-none"
+                style={{
+                  top: `${p.top}%`,
+                  left: 0,
+                  fontSize: `${p.sz}px`,
+                  color: p.col,
+                  opacity: p.op,
+                  animationDuration: `${p.dur}s`,
+                  animationDelay: `${del}s`,
+                  "--sym-rx": `${p.rx}deg`,
+                  "--sym-rz": `${p.rz}deg`,
+                  textShadow: `0 0 ${Math.round(p.sz * 0.4)}px ${p.col}70, 0 0 ${Math.round(p.sz * 0.9)}px ${p.col}28`,
+                  fontFamily: "ui-monospace, SFMono-Regular, monospace",
+                } as React.CSSProperties}
+              >
+                {p.sym}
+              </div>
+            );
+          })}
         </div>
       )}
 

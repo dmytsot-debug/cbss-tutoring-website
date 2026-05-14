@@ -7,6 +7,7 @@ import { CTABanner } from "@/components/site/cta-banner";
 import { FAQ } from "@/components/site/faq";
 import { FadeIn } from "@/components/motion/fade-in";
 import { Stagger, StaggerItem } from "@/components/motion/stagger";
+import { AnimatedLine } from "@/components/site/animated-line";
 import {
   programs,
   stats,
@@ -97,10 +98,7 @@ export default function HomePage() {
             as="h2"
           />
           <div className="relative mt-16">
-            <div
-              aria-hidden
-              className="absolute left-0 right-0 top-8 hidden h-px bg-border md:block"
-            />
+            <AnimatedLine />
             <Stagger className="grid grid-cols-1 gap-12 md:grid-cols-3">
               {howItWorks.map((step) => (
                 <StaggerItem key={step.n} className="relative">
@@ -122,16 +120,24 @@ export default function HomePage() {
 
       <section aria-label="Student testimonial" className="border-t border-border">
         <div className="mx-auto max-w-6xl px-6 py-24 md:px-8 md:py-32 lg:px-12">
-          <FadeIn className="mx-auto max-w-4xl text-center">
-            <span aria-hidden className="font-serif text-6xl text-accent">
-              &ldquo;
-            </span>
-            <blockquote className="mt-4 font-serif text-3xl italic leading-[1.25] tracking-tight text-foreground sm:text-4xl md:text-5xl">
-              {homeTestimonial.quote}
-            </blockquote>
-            <p className="mt-8 font-mono text-xs uppercase tracking-[0.22em] text-muted-foreground">
-              — {homeTestimonial.attribution}
-            </p>
+          <FadeIn y={40} className="mx-auto max-w-4xl text-center">
+            <Stagger delay={0.1} stagger={0.12} className="flex flex-col items-center gap-0">
+              <StaggerItem>
+                <span aria-hidden className="font-serif text-6xl text-accent">
+                  &ldquo;
+                </span>
+              </StaggerItem>
+              <StaggerItem y={30}>
+                <blockquote className="mt-4 font-serif text-3xl italic leading-[1.25] tracking-tight text-foreground sm:text-4xl md:text-5xl">
+                  {homeTestimonial.quote}
+                </blockquote>
+              </StaggerItem>
+              <StaggerItem>
+                <p className="mt-8 font-mono text-xs uppercase tracking-[0.22em] text-muted-foreground">
+                  — {homeTestimonial.attribution}
+                </p>
+              </StaggerItem>
+            </Stagger>
           </FadeIn>
         </div>
       </section>
