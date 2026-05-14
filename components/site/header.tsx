@@ -52,7 +52,7 @@ export function Header() {
             CBSS
           </span>
           <span className="hidden font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground sm:inline">
-            Tutoring · Est. {site.founded}
+            Tutoring
           </span>
         </Link>
 

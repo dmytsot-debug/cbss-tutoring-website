@@ -13,9 +13,6 @@ export function Footer() {
               <span className="font-serif text-2xl font-medium tracking-tight text-foreground">
                 CBSS Tutoring
               </span>
-              <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground">
-                Est. {site.founded}
-              </span>
             </Link>
             <p className="mt-4 max-w-sm text-sm leading-[1.7] text-muted-foreground">
               {site.description}

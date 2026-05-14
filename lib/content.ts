@@ -30,7 +30,6 @@ export const site = {
   schoolMapsUrl:
     "https://www.google.com/maps?q=Dr.+Charles+Best+Secondary+School,+Coquitlam,+BC",
   teacherSponsor: "Ms. Fewer",
-  founded: 2018,
   landAcknowledgment:
     "We acknowledge we operate on the unceded traditional territory of the Kwikwetlem First Nation, which lies within the shared territories of the Tsleil-Waututh, Katzie, Musqueam, Qayqayt, Squamish, and Sto':lo Nations.",
 } as const;
@@ -93,7 +92,6 @@ export type Stat = {
 export const stats: Stat[] = [
   { value: "50+", label: "Active tutors" },
   { value: "30+", label: "Subjects covered" },
-  { value: "7", label: "Years running" },
   { value: "500+", label: "Students helped" },
 ];
 
@@ -349,7 +347,7 @@ export const homeMission = {
   heading: "Tutoring that takes your courses seriously.",
   body: [
     "CBSS Tutoring is a student-run organization at Charles Best, founded on the belief that the best person to help you through a course is often someone who finished it a year ahead of you. We pair students with senior peers across every department, and we run free drop-in programs for the subjects where students most often need a second explanation.",
-    "We're not a side project. The executive team is elected, the records are public, and the program has been running since 2018 under the supervision of Ms. Fewer.",
+    "We're not a side project. The executive team is elected, the records are public, and the program runs under the supervision of Ms. Fewer.",
   ],
 };
 
@@ -360,7 +358,7 @@ export const aboutPage = {
     "We're a non-profit peer tutoring program at Dr. Charles Best Secondary School in Coquitlam, BC. Every tutor is a current Charles Best student. Every program is run by students. Every session is free.",
   mission: [
     "CBSS Tutoring exists because asking for help in school is harder than it should be. A senior who recently passed the same course can explain a concept in five minutes that took a teacher a week — not because the teacher was wrong, but because the senior remembers being stuck in exactly the same spot.",
-    "We organize that institutional knowledge. We recruit tutors who are strong in their subjects and care about teaching. We run programs that meet students where they are — one-on-one when that's what's needed, walk-in for Math 9 and 10, weekly clinics for the harder math courses. We track our work, train our tutors, and operate under a published constitution. We've been doing this since 2018 with the support of our teacher sponsor, Ms. Fewer.",
+    "We organize that institutional knowledge. We recruit tutors who are strong in their subjects and care about teaching. We run programs that meet students where they are — one-on-one when that's what's needed, walk-in for Math 9 and 10, weekly clinics for the harder math courses. We track our work, train our tutors, and operate under a published constitution, with the support of our teacher sponsor, Ms. Fewer.",
   ],
   quote: {
     text: "We pair students with peers who've recently mastered the same material — so the help is precise, current, and free.",

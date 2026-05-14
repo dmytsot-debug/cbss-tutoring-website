@@ -166,7 +166,7 @@ export function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, ease: EASE }}
         >
-          Charles Best Secondary · Est. 2018
+          Charles Best Secondary
         </motion.p>
 
         <motion.h1
