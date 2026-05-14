@@ -223,6 +223,20 @@
   to { height: 0; opacity: 0; }
 }
 
+@keyframes symbol-flow {
+  from {
+    transform: translateX(-240px) rotateX(var(--sym-rx, 0deg)) rotateY(0deg) rotateZ(var(--sym-rz, 0deg));
+  }
+  to {
+    transform: translateX(calc(100vw + 240px)) rotateX(var(--sym-rx, 0deg)) rotateY(360deg) rotateZ(var(--sym-rz, 0deg));
+  }
+}
+.symbol-flow {
+  animation-name: symbol-flow;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
