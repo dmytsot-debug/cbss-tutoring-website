@@ -3,6 +3,7 @@ import { Fraunces, Inter, JetBrains_Mono } from "next/font/google";
 import { Providers } from "@/components/providers";
 import { Header } from "@/components/site/header";
 import { Footer } from "@/components/site/footer";
+import { CursorTrail } from "@/components/site/cursor-trail";
 import { site } from "@/lib/content";
 import { siteUrl } from "@/lib/nav";
 import "./globals.css";
@@ -93,6 +94,7 @@ export default function RootLayout({
           <Header />
           <main id="main">{children}</main>
           <Footer />
+          <CursorTrail />
         </Providers>
       </body>
     </html>
