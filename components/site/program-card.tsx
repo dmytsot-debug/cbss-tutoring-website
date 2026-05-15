@@ -9,6 +9,7 @@ import {
   useTransform,
   useReducedMotion,
 } from "framer-motion";
+import { EASE } from "@/lib/motion";
 import { ArrowUpRight, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -70,7 +71,7 @@ export function ProgramCard({
           : { rotateX, rotateY, transformStyle: "preserve-3d", perspective: 900 }
       }
       whileHover={reduce ? {} : { scale: 1.02 }}
-      transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+      transition={{ duration: 0.3, ease: EASE }}
       className={cn(
         "group relative flex h-full flex-col overflow-hidden rounded-2xl border border-border bg-card p-8 text-card-foreground transition-shadow duration-300 hover:shadow-2xl hover:shadow-foreground/8",
         className,

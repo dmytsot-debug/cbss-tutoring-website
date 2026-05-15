@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { motion, useReducedMotion } from "framer-motion";
+import { EASE } from "@/lib/motion";
 
 type Particle = {
   id: number;
@@ -71,7 +72,6 @@ const PARTICLES: Particle[] = [
   { id: 45, sym: "∑",     top: 96, sz: 50, dur: 14, del: -7,  rx: -28, rz: -10, op: 0.55, col: "#38bdf8" },
 ];
 
-const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
 export function Hero() {
   const reduce = useReducedMotion();

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { useInView, animate, useReducedMotion } from "framer-motion";
+import { EASE } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
 type Props = {
@@ -24,7 +25,7 @@ export function StatTile({ value, label, className }: Props) {
     const el = ref.current;
     const controls = animate(0, num, {
       duration: 1.6,
-      ease: [0.22, 1, 0.36, 1],
+      ease: EASE,
       onUpdate(v) {
         el.textContent = Math.round(v) + suffix;
       },

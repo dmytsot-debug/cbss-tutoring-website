@@ -2,8 +2,7 @@
 
 import { motion, useReducedMotion, type Variants } from "framer-motion";
 import { type ReactNode } from "react";
-
-const EASE: [number, number, number, number] = [0.22, 1, 0.36, 1];
+import { EASE, VIEWPORT } from "@/lib/motion";
 
 type FadeInProps = {
   children: ReactNode;
@@ -43,7 +42,7 @@ export function FadeIn({
       className={className}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, margin: "-80px" }}
+      viewport={VIEWPORT}
       variants={variants}
     >
       {children}

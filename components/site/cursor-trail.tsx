@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { useReducedMotion } from "framer-motion";
 
 const SYMBOLS = [
   "∫", "∑", "∂", "√", "∞", "π", "∆", "∇",
@@ -10,35 +9,27 @@ const SYMBOLS = [
   "±", "×", "∮", "∏", "ℝ", "ℏ", "⇌", "d/dx",
 ];
 
-const COLORS = [
-  [96,  165, 250],  // blue-400
-  [147, 197, 253],  // blue-300
-  [56,  189, 248],  // sky-400
-  [34,  211, 238],  // cyan-400
-  [125, 211, 252],  // sky-300
+const COLORS: [number, number, number][] = [
+  [96,  165, 250],
+  [147, 197, 253],
+  [56,  189, 248],
+  [34,  211, 238],
+  [125, 211, 252],
 ];
 
 type Particle = {
-  x: number;
-  y: number;
-  vx: number;
-  vy: number;
-  life: number;   // 1 → 0
-  decay: number;
-  symbol: string;
-  size: number;
+  x: number; y: number;
+  vx: number; vy: number;
+  life: number; decay: number;
+  symbol: string; size: number;
   r: number; g: number; b: number;
-  rotation: number;
-  rotSpeed: number;
+  rotation: number; rotSpeed: number;
 };
 
 export function CursorTrail() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const reduce = useReducedMotion();
 
   useEffect(() => {
-    if (reduce) return;
-
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
@@ -46,20 +37,23 @@ export function CursorTrail() {
 
     let rafId = 0;
     let lastSpawn = 0;
+    let heroDocBottom = 0;
     const particles: Particle[] = [];
 
+    function cacheHero() {
+      const hero = document.querySelector<HTMLElement>('[aria-labelledby="hero-heading"]');
+      heroDocBottom = hero ? hero.offsetTop + hero.offsetHeight : 0;
+    }
+
     function resize() {
-      canvas!.width = window.innerWidth;
-      canvas!.height = window.innerHeight;
+      const dpr = window.devicePixelRatio || 1;
+      canvas!.width  = window.innerWidth  * dpr;
+      canvas!.height = window.innerHeight * dpr;
+      ctx!.scale(dpr, dpr);
+      cacheHero();
     }
     resize();
     window.addEventListener("resize", resize, { passive: true });
-
-    function belowHero(clientY: number): boolean {
-      const hero = document.querySelector('[aria-labelledby="hero-heading"]');
-      if (!hero) return true;
-      return clientY > hero.getBoundingClientRect().bottom;
-    }
 
     function spawn(x: number, y: number) {
       if (particles.length >= 120) return;
@@ -79,25 +73,23 @@ export function CursorTrail() {
     }
 
     function draw() {
-      ctx!.clearRect(0, 0, canvas!.width, canvas!.height);
+      const w = canvas!.width  / (window.devicePixelRatio || 1);
+      const h = canvas!.height / (window.devicePixelRatio || 1);
+      ctx!.clearRect(0, 0, w, h);
 
       for (let i = particles.length - 1; i >= 0; i--) {
         const p = particles[i];
-        p.x  += p.vx;
-        p.y  += p.vy;
-        p.vy *= 0.97;
-        p.vx *= 0.99;
-        p.life     -= p.decay;
-        p.rotation += p.rotSpeed;
+        p.x += p.vx; p.y += p.vy;
+        p.vy *= 0.97; p.vx *= 0.99;
+        p.life -= p.decay; p.rotation += p.rotSpeed;
 
         if (p.life <= 0) { particles.splice(i, 1); continue; }
 
-        const a = Math.max(0, p.life);
         ctx!.save();
-        ctx!.globalAlpha = a;
+        ctx!.globalAlpha = Math.max(0, p.life);
         ctx!.translate(p.x, p.y);
         ctx!.rotate((p.rotation * Math.PI) / 180);
-        ctx!.font = `${p.size}px ui-monospace, "JetBrains Mono", monospace`;
+        ctx!.font        = `${p.size}px ui-monospace, "JetBrains Mono", monospace`;
         ctx!.fillStyle   = `rgb(${p.r},${p.g},${p.b})`;
         ctx!.shadowColor = `rgba(${p.r},${p.g},${p.b},0.7)`;
         ctx!.shadowBlur  = p.size * 0.7;
@@ -115,7 +107,7 @@ export function CursorTrail() {
     function onMouseMove(e: MouseEvent) {
       const now = performance.now();
       if (now - lastSpawn < 25) return;
-      if (!belowHero(e.clientY)) return;
+      if (e.clientY + window.scrollY <= heroDocBottom) return;
       lastSpawn = now;
       spawn(e.clientX, e.clientY);
     }
@@ -127,9 +119,7 @@ export function CursorTrail() {
       window.removeEventListener("mousemove", onMouseMove);
       window.removeEventListener("resize", resize);
     };
-  }, [reduce]);
-
-  if (reduce) return null;
+  }, []);
 
   return (
     <canvas
