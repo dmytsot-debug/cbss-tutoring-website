@@ -11,11 +11,11 @@ import {
   useReducedMotion,
 } from "framer-motion";
 import { EASE } from "@/lib/motion";
-import { ArrowUpRight, type LucideIcon } from "lucide-react";
+import { ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 type Props = {
-  icon: LucideIcon;
+  icon: React.ReactNode;
   title: string;
   description: string;
   href: string;
@@ -24,7 +24,7 @@ type Props = {
 };
 
 export function ProgramCard({
-  icon: Icon,
+  icon,
   title,
   description,
   href,
@@ -126,7 +126,7 @@ export function ProgramCard({
       )}
 
       <div className="relative mb-6 inline-flex size-12 items-center justify-center rounded-xl bg-accent/10 text-accent transition-transform duration-300 group-hover:scale-110">
-        <Icon className="size-5" />
+        {icon}
       </div>
       <h3 className="font-serif text-2xl leading-[1.2] tracking-tight text-foreground">
         {title}

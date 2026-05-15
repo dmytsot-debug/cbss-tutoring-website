@@ -58,16 +58,19 @@ export default function HomePage() {
             intro="Whether you want a dedicated tutor for the semester or a walk-in session before a test, we have a program built for it."
           />
           <Stagger className="mt-16 grid grid-cols-1 gap-6 md:grid-cols-3">
-            {programs.map((p) => (
-              <StaggerItem key={p.slug}>
-                <ProgramCard
-                  icon={p.icon}
-                  title={p.title}
-                  description={p.short}
-                  href={p.href}
-                />
-              </StaggerItem>
-            ))}
+            {programs.map((p) => {
+              const Icon = p.icon;
+              return (
+                <StaggerItem key={p.slug}>
+                  <ProgramCard
+                    icon={<Icon className="size-5" />}
+                    title={p.title}
+                    description={p.short}
+                    href={p.href}
+                  />
+                </StaggerItem>
+              );
+            })}
           </Stagger>
         </div>
       </section>

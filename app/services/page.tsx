@@ -27,18 +27,21 @@ export default function ServicesPage() {
       <section className="border-b border-border">
         <div className="mx-auto max-w-6xl px-6 py-20 md:px-8 md:py-28 lg:px-12">
           <Stagger className="grid grid-cols-1 gap-6 md:grid-cols-2">
-            {servicesPage.cards.map((c) => (
-              <StaggerItem key={c.href} className="h-full">
-                <ProgramCard
-                  icon={c.icon}
-                  title={c.title}
-                  description={c.description}
-                  href={c.href}
-                  cta="Explore"
-                  className="h-full p-10"
-                />
-              </StaggerItem>
-            ))}
+            {servicesPage.cards.map((c) => {
+              const Icon = c.icon;
+              return (
+                <StaggerItem key={c.href} className="h-full">
+                  <ProgramCard
+                    icon={<Icon className="size-5" />}
+                    title={c.title}
+                    description={c.description}
+                    href={c.href}
+                    cta="Explore"
+                    className="h-full p-10"
+                  />
+                </StaggerItem>
+              );
+            })}
           </Stagger>
         </div>
       </section>
