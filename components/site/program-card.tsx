@@ -5,6 +5,7 @@ import Link from "next/link";
 import {
   motion,
   useMotionValue,
+  useScroll,
   useSpring,
   useTransform,
   useReducedMotion,
@@ -47,6 +48,21 @@ export function ProgramCard({
       `radial-gradient(300px circle at ${x} ${y}, rgba(194,130,50,0.09), transparent 70%)`,
   );
 
+  // Scroll-linked parallax + mesh
+  const { scrollYProgress } = useScroll({
+    target: cardRef,
+    offset: ["start end", "end start"],
+  });
+  const smoothProgress = useSpring(scrollYProgress, { stiffness: 60, damping: 20 });
+  // Mesh grid translates upward as card scrolls into view
+  const meshY = useTransform(smoothProgress, [0, 1], [0, -48]);
+  // Blue gradient highlight drifts from low → high as card passes
+  const gradientCenterY = useTransform(smoothProgress, [0, 1], [85, 15]);
+  const scrollGradient = useTransform(
+    gradientCenterY,
+    (y) => `radial-gradient(ellipse 80% 60% at 50% ${y}%, rgba(59,130,246,0.09), transparent 70%)`,
+  );
+
   function onMouseMove(e: React.MouseEvent<HTMLDivElement>) {
     if (reduce) return;
     const rect = cardRef.current?.getBoundingClientRect();
@@ -77,6 +93,29 @@ export function ProgramCard({
         className,
       )}
     >
+      {/* Scroll-driven mesh grid — overflows slightly so grid doesn't clip when it shifts */}
+      {!reduce && (
+        <motion.div
+          aria-hidden
+          className="pointer-events-none absolute -inset-[6%] rounded-2xl"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px)",
+            backgroundSize: "28px 28px",
+            y: meshY,
+          }}
+        />
+      )}
+
+      {/* Scroll-driven gradient — blue highlight that drifts upward on scroll */}
+      {!reduce && (
+        <motion.div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 rounded-2xl"
+          style={{ background: scrollGradient }}
+        />
+      )}
+
       {/* Spotlight glow that follows the mouse */}
       {!reduce && (
         <motion.div
